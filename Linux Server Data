@@ -1,2 +1,4 @@
 
 # cat /etc/sysconfig/selinux ( Selinux Path )
+# systemctl disable firewalld ( to disable firewall in Centos-7)
+# systemctl stop firewalld ( to stop firewall in Centos-7)
