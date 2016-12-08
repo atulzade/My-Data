@@ -1,0 +1,214 @@
+sudo yum update
+
+# sudo passwd ( to change the password of root )
+
+1) yum install mysql-server (to install mysql-server)
+
+2) yum install php (to install php)
+
+3) yum install httpd (to install apache ) ( to start service - service httpd start/stop/restart/stauts )
+
+
+4) To change the password of Mysql Root :- ( to start mysql service - service mysqld start )
+
+mysql -u root -p
+use mysql;
+update user set password=PASSWORD("your_new_password") where User='root';
+quit
+
+4.1) shell> mysql -u root
+mysql> UPDATE mysql.user SET Password = PASSWORD('new_password')
+    ->     WHERE User = 'root';
+mysql> FLUSH PRIVILEGES;
+ 
+
+5)To Create user in Mysql :-
+
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+
+6) GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost'; ( to grant all credentials )
+
+i) GRANT SELECT, UPDATE ON database.* TO 'user'@'localhost';
+
+7) To give Read Write Permission to /var/www/html
+
+chown  -R apache:apache /var/www/html
+usermod  -a  -G apache ec2-user
+chmod 777 /var/www/html  -R
+
+8) Commands:
+
+service httpd start
+service mysqld start
+service httpd stop
+service mysqld stop
+service httpd restart
+service mysqld restart
+
+
+9) cp -rvfp folder1 folder2 ( to copy folder with permission & attributes )
+
+10) sudo yum --enablerepo=epel install phpmyadmin ( To install phpmyadmin )
+
+
+11) To Edit /etc/httpd/conf.d/phpMyAdmin.conf
+
+<IfModule mod_authz_core.c>
+     # Apache 2.4
+     <RequireAny>
+       Require ip 127.0.0.1
+       Require ip ::1
+     </RequireAny>
+   </IfModule>
+   <IfModule !mod_authz_core.c>
+    # Apache 2.2
+    # Order Deny,Allow
+    # Deny from All
+     Allow from All
+     Allow from ::1
+   </IfModule>
+</Directory>
+
+12)copy info.php to /var/www/html to check configuration
+<?php
+phpinfo () ;
+?>
+
+13) Command to take backup of mysql Database through command line :-
+
+To start, SSH into the first server (using a tool like PuTTy) as a user with sufficient privileges to work with the server. Execute the following command at the terminal to dump the database to a file:
+
+mysqldump -u [username] -p [database_name] > [dumpfilename.sql]
+
+You will be prompted for the password and the export will begin. Note that you should replace each variable in brackets with the proper values and do not include the brackets.
+
+When the export is complete, it’s helpful to compress the file to make it transfer to the new server faster. To do so, run the following command:
+
+tar zcf dumpfilename.tar.gz dumpfilename.sql
+
+replacing dumpfilename with your actual file name.
+
+Next, transfer the compressed file to your new server, either by making it available at a web address at the old server and using wget, or by using FTP to download and upload the file.
+
+Once the file is on the new server, start be decompressing it using the following command:
+
+tar zxf dumpfilename.tar.gz
+
+The hit list
+
+    1
+    How 40 tech companies got their names
+    Arg! The 9 hardest things programmers have to do
+    Superclass: 14 of the world’s best living programmers
+
+You’ll now have your original file dumpfilename.sql that you can import into your database. To begin the import process, use the command:
+
+mysql -u [username] -p [database_name] < [dumpfilename.sql]
+
+You will be prompted for the password and the import will begin. Note that you should replace each variable in brackets with the proper values and do not include the brackets.
+
+When the terminal returns to the ready cursor, the import is complete.
+
+14) Changing the Time Zone
+
+Amazon Linux instances are set to the UTC (Coordinated Universal Time) time zone by default, but you may wish to change the time on an instance to the local time or to another time zone in your network.
+
+To change the time zone on an instance
+
+    Identify the time zone to use on the instance. The /usr/share/zoneinfo directory contains a hierarchy of time zone data files. Browse the directory structure at that location to find a file for your time zone.
+
+    [ec2-user ~]$ ls /usr/share/zoneinfo
+    Africa      Chile    GB         Indian       Mideast   posixrules  US
+    America     CST6CDT  GB-Eire    Iran         MST       PRC         UTC
+    Antarctica  Cuba     GMT        iso3166.tab  MST7MDT   PST8PDT     WET
+    Arctic      EET      GMT0       Israel       Navajo    right       W-SU
+    ...
+
+    Some of the entries at this location are directories (such as America), and these directories contain time zone files for specific cities. Find your city (or a city in your time zone) to use for the instance. In this example, you can use the time zone file for Los Angeles, /usr/share/zoneinfo/America/Los_Angeles.
+
+    Update the /etc/sysconfig/clock file with the new time zone.
+
+        Open the /etc/sysconfig/clock file with your favorite text editor (such as vim or nano). You need to use sudo with your editor command because /etc/sysconfig/clock is owned by root.
+
+        Locate the ZONE entry, and change it to the time zone file (omitting the /usr/share/zoneinfo section of the path). For example, to change to the Los Angeles time zone, change the ZONE entry to the following.
+
+        ZONE="America/Los_Angeles"
+
+        Save the file and exit the text editor.
+
+    Create a symbolic link between /etc/localtime and your time zone file so that the instance finds the time zone file when it references local time information.
+
+    [ec2-user ~]$ sudo ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+    Reboot the system to pick up the new time zone information in all services and applications.
+
+    [ec2-user ~]$ sudo reboot
+
+15) To extract package :-
+    tar -xvf file.tar
+    tar -xzvf file.tar.gz
+    tar -xjvf file.tar.bz2
+
+16) # find / test
+    # find / phpmailer | grep mailer
+
+17) sudo yum install epel-release ( Use this command to install phymyadmin if yum commnad doesn't work ) 
+
+sudo sed -i "s/mirrorlist=https/mirrorlist=http/" /etc/yum.repos.d/epel.repo 
+
+sudo yum install phpmyadmin
+
+# sudo yum --enablerepo=epel install phpmyadmin
+
+18)  Create a text file containing the following statement on a single line. Replace the password with the password that you want to use.
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MyNewPass');
+
+19) Backup Copy Command :
+cp -rfp /var/www/html/etc.... /home/ec2-user/
+
+20) Command to check file size :
+# du -sh *
+
+21) Command to check folder size :
+# du -sh
+
+22) Command to view the file : 
+# tail -f ( file name )
+
+23) Command to clear log file :
+# > /var/log/httpd/error_log ( exmaple path ) 
+
+24) yum list|grep mysql ( to list available yum libraries )
+
+25) command to connect db instance from web server :
+# mysql -h myinstance.123456789012.us-east-1.rds.amazonaws.com -P 3306 -u mymasteruser -p
+
+26) Process to install database in linux server :
+i) create database using phpmyadmin ( utf8_general_ci ) ii) upload .sql file in server iii) using this command to install database on server 
+( mysql -h localhost -u root -p myrakshak_demo < /home/ec2-user/Myrakshak-Backup-24-11-2015.sql )
+
+27) command to configure cronjob : ( Default Path /var/spool/cron )
+# crontab -e ( */15 * * * * /opt/date/test.sh [ file path ] )
+
+28) Congigure autoservice start after reboot : ( /etc/init.d [ startup services file path ] )
+# chkconfig --add httpd
+# chkconfig --level 3 httpd on
+
+29) tar -czvpf fullbackup1.tar.gz /opt/test/ ( Backup command with permission )
+30) tar -xzvpf fullbackup1.tar.gz ( Command to extract the backup )
+
+31) This code is to redirect trafic from http to https  
+RewriteEngine On
+RewriteCond %{HTTPS} off
+
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+32) command to change the password of htaccess User :
+# htpasswd -c .htpasswd username
+
+33) # yum remove php ( command to remove php )
+
+34) Now we can allow web server traffic:
+iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
