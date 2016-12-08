@@ -1,0 +1,82 @@
+1) Now we can allow web server traffic:
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --permanent --add-port=443/tcp
+
+2) Step 2: Allow Apache Through the Firewall
+
+Allow the default HTTP and HTTPS port, ports 80 and 443, through firewalld:
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --permanent --add-port=443/tcp
+sudo firewall-cmd --permanent --add-port=17213/tcp
+
+And reload the firewall:
+sudo firewall-cmd --reload
+
+Step 3: Configure Apache to Start on Boot
+
+And then start Apache:
+sudo systemctl start httpd
+
+Be sure that Apache starts at boot:
+sudo systemctl enable httpd
+
+To check the status of Apache:
+sudo systemctl status httpd
+
+To stop Apache:
+sudo systemctl stop httpd
+
+down vote
+	
+You should remove Maiadb first. ( http://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html )
+# yum -y remove mariadb-libs
+------------------------------------------------------------
+PhpMyAdmin Conf file :
+<Directory /usr/share/phpMyAdmin/>
+   AddDefaultCharset UTF-8
+
+   <IfModule mod_authz_core.c>
+     # Apache 2.4
+     <RequireAny>
+       Require ip 127.0.0.1
+      #Require ip 123.201.125.122
+       Require ip ::1
+       Require all granted
+     </RequireAny>
+   </IfModule>
+   <IfModule !mod_authz_core.c>
+     # Apache 2.2
+     # Order Deny,Allow
+     # Deny from All
+----------------------------------------------------------------
+Firewall DHCP Commands :
+exec dhcp lease-list –> show current list on DHCP lease
+execute dhcp lease-clear <ip_addres> –> clear the DHCP lease of a specific ip
+execute dhcp lease-clear all —> clear all the DHCP leases
+
+ASTERIX # config system dhcp server
+
+ASTERIX (server) # show
+config system dhcp server
+edit 1
+set auto-configuration disable
+set default-gateway 172.16.20.99
+set domain "ARMORIQUE"
+set interface "internal"
+config ip-range
+edit 1
+set end-ip 172.16.20.15
+set start-ip 172.16.20.11
+next
+end
+set lease-time 86400
+set netmask 255.255.0.0
+set dns-server1 172.16.20.99
+next
+end
+
+ASTERIX (server) # edit 1
+ASTERIX (1) # set lease-time
+<integer> 300 ~ 8640000 seconds (5 minutes ~ 100 days)
+0 for unlimited lease time 
+-----------------------------------------------------------------
