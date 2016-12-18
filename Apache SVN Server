@@ -1,1 +1,2 @@
+svnserve -d -r /repo full path
 
