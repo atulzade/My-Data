@@ -1,2 +1,3 @@
 svnserve -d -r /repo full path
-
+SVNPath /var/www/svn/repos
+SVNParentPath /var/www/svn
