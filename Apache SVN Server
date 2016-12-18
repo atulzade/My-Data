@@ -1,5 +1,7 @@
 http://www.linuxtechi.com/install-apache-subversion-svn-centos-7/
 
+http://svnbook.red-bean.com/en/1.7/svn.serverconfig.httpd.html
+
 SVN User Credentials:
 linuxtechi = linux
 jack = jack
