@@ -1,3 +1,9 @@
 svnserve -d -r /repo full path
 SVNPath /var/www/svn/repos
 SVNParentPath /var/www/svn
+
+http://svnbook.red-bean.com/en/1.5/svn.ref.mod_dav_svn.conf.html
+
+	
+You nailed it. Changing to Location /> fixed the problem and now I am getting a repos - Revision 0: 
+/ Powered by Subversion version 1.6.11 (r934486). Thank you so much! – gozu Aug 26 '12 at 1:44 
