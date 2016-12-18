@@ -1,9 +1,64 @@
-svnserve -d -r /repo full path
-SVNPath /var/www/svn/repos
-SVNParentPath /var/www/svn
+http://www.linuxtechi.com/install-apache-subversion-svn-centos-7/
 
-http://svnbook.red-bean.com/en/1.5/svn.ref.mod_dav_svn.conf.html
+SVN User Credentials:
+linuxtechi = linux
+jack = jack
 
-	
-You nailed it. Changing to Location /> fixed the problem and now I am getting a repos - Revision 0: 
-/ Powered by Subversion version 1.6.11 (r934486). Thank you so much! – gozu Aug 26 '12 at 1:44 
+# systemctl stop firewalld
+
+# svnserve -d -r /var/www/svn/reop
+
+1) yum install httpd subversion mod_dav_svn
+
+2) vi /etc/httpd/conf.modules.d/10-subversion.conf
+Alias /svn /var/www/svn
+<Location /svn>
+DAV svn
+SVNParentPath /var/www/svn/
+AuthType Basic
+AuthName "SVN Repository"
+AuthUserFile /etc/svn-auth-accounts
+Require valid-user
+</Location>
+
+3) htpasswd -cm /etc/svn-auth-accounts linuxhelpuser
+
+4) mkdir /var/www/svn
+
+5) svnadmin create repo
+
+6) chown apache.apache /var/www/svn/repo/
+
+7) chcon -R -t httpd_sys_content_t /var/www/svn/repo/
+
+8) chcon -R -t httpd_sys_rw_content_t /var/www/svn/repo/
+
+9) firewall-cmd--permanent --zone=public --add-service=http
+
+10) firewall-cmd--permanent --zone=public --add-service=https
+
+11) firewall-cmd --reload
+
+12) systemctl enable httpd.service
+
+13) systemctl restart httpd.service
+
+14) firefox 
+192.168.1.1/svn/repo
+
+15) vi /var/www/svn/repo/conf/svnserve.conf
+anon-access = none
+authz-db = authz
+
+16) cd /mnt/
+mkdir linuxhelpproject
+cd linuxhelpproject
+touch file1 ; touch file2
+
+17) svn import -m "First SVN Repo" /mnt/linuxhelpproject/ file:///var/www/svn/repo/linuxhelpproject
+
+
+
+
+
+ 
