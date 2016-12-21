@@ -1,0 +1,126 @@
+https://www.atlantic.net/community/howto/install-and-configure-subversion-svn-on-centos-7/
+
+
+Install and Configure Subversion (SVN) on CentOS 7
+CentosDeveloper Tools How-To's
+Introduction
+
+Subversion (or SVN) is an open-source software version control system used for maintaining and tracking changes to software code. This article will walk you through the process of setting up an SVN server on CentOS 7 that is reachable from your local computer. Finally, we will test that server by creating a sample project on an SVN client.
+.
+Prerequisites
+
+    An existing CentOS 7 installation. If you need help setting up CentOS 7, check out our how-to for Initial CentOS 7 Setup.
+    A basic knowledge of the Linux command line
+
+.
+Installing SVN
+
+The first step to getting your server running is to install SVN. On CentOS, this is most easily done using the yum package manager. Run the following command to install SVN:
+
+    sudo yum install subversion
+
+Press y, when prompted, to confirm your installation. Once completed, you should see “Complete!” in the terminal. To verify the installation, run the following command:
+
+    svn --version
+
+If properly installed, you will see a short message that gives the version details and copyright information for your SVN installation.
+.
+Creating a Repository
+
+Before you can start using SVN, you’ll need to decide what structure you will need for your repositories. For small teams or personal use, one repository should be sufficient. If you need multiple repositories, you should repeat this section for each repository that you need. Run the following command to create a filesystem directory at /srv/svn for the repository.
+
+    sudo mkdir /srv/svn
+
+Next, initialize the repository using the svnadmin command:
+
+    sudo svnadmin create /srv/svn
+
+This command creates the necessary folder structure for an SVN repository and a few default files.
+.
+Configuring the Server
+
+There are many options for running the SVN server. For this tutorial, we’ll use the built-in svnserve, which is very easy to start up. This option will suit most teams that don’t need advanced options.
+.
+Creating Users
+
+By default, svnserve will look for configuration files in the /conf directory inside of the repository. Navigate to that directory and create the file svnserve.conf (svnadmin may create a default configuration file you can edit, as well).
+
+    cd /srv/svn/conf
+    sudo nano svnserve.conf
+
+In this file, we will add two properties. First is password-db that points to the file where users will be stored. Second is realm, which you can think of as the “namespace” used by this repository. This realm name will be displayed to users during authentication.
+
+    [general]
+    password-db = passwd
+    realm = my company
+
+    If you are editing the pregenerated configuration file, these properties will already exist. You can remove the comment symbol (#)–and any preceding whitespace–and edit the assignment to match above or to your liking.
+
+.
+In this /srv/svn/conf directory, you should already see the passwd file. The svnadmin command above creates this file automatically. Add as many users as you’d like by specifying the username and password in key-value pairs. For example:
+
+    [users]
+    samantha = secretpassword
+    robert = hunter2
+
+By default, non-authenticated users will have read access to the repository, and authenticated users will have write access. If you need more granular control, take a look at the authz file included in this directory. It provides many examples of access restriction.
+.
+Starting the server
+
+To start the server, we use the svnserve command.
+
+    sudo svnserve -d -r /srv/svn
+
+The -d switch starts it as a background (daemon) process. The -r switch points the server to the file system location of the repository that we created earlier. (For the full list of configuration options, run man svnserve.)
+
+    Be sure to run this process as an elevated (root) user. If you don’t, end users will not be able to commit any changes to the repository.
+
+.
+The default port for svnserve is 3690. To verify that the SVN server is running, open a browser and navigate to http://myserver:3690 (repacing myserver with the hostname or IP address of your server). You should see some text similar to below.
+Example Subversion Response in Browser
+
+Example Subversion Response in Browser
+
+    Even though we can use http:// here to make sure that the server is started, we will primarily interact with the SVN server using the custom svn:// URL format.
+
+.
+Creating a Test Project
+
+To make sure everything is set up properly, we’ll create a dummy project. From here on, you should be working from a client that has SVN installed. If you don’t have easy access to another computer (or if you are installing SVN on your computer for personal use), you can, of course, use the server that you are already working on.
+
+Start by creating a test project folder.
+
+    mkdir ~/Documents/my-first-project
+
+Then, run the following command to import that directory into SVN. (Again, be sure to replace myserver with the hostname or IP of your SVN server.)
+
+    svn import ~/Documents/my-first-project svn://myserver:3690/my-first-project -m "Initial commit." --username robert --password hunter2
+
+There’s a lot of flags in that single command, so let’s review what each of them does.
+
+    import creates a new project in SVN. We specify the source and then the destination.
+    -m "Initial commit." is our commit message that is logged in SVN.
+    --username and --password are the authentication details.
+
+    You may receive a warning that your password is going to be cached unencrypted. If your client computer is already password-protected, you may be OK with this. But for optimal security, you can enter “no” at the prompt to Store password unencrypted, and your password will not be cached. You can also follow the suggestion of setting store-plaintext-passwords (in the configuration file indicated) to “no” so you aren’t prompted again.
+
+.
+If all goes well, you should see Committed revision 1 in the terminal.
+Common Errors
+
+Here are some errors you could get if something is not configured properly:
+
+    Authentication or authorization failure: Review the setup under “Creating Users”. It’s critical that these configuration files are in the correct place and have no typos.
+    Unable to connect to a repository: Make sure the server is running and that you started it with the correct -r path.
+    File permission errors: Make sure the server is running with elevated permissions. If you are unsure, the ps aux command will show you the user that is running svnserve.
+
+.
+Conclusion
+
+After finishing this tutorial, you should be able to:
+
+    Create a basic SVN repository in CentOS 7
+    Add users to the repository
+    Start a server through which clients can access the repository
+
+There are many additional options that you can configure in your installation of SVN. For further information, take a look at the SVN Book, which provides more in-depth details about SVN server configuration and maintenance.
