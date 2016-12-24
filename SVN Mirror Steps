@@ -1,0 +1,11 @@
+Sudo yum install subversion
+Steps to copy Repose
+
+cp repo/conf/svnserve.conf new repo/conf/
+cp repo/conf/passwd repo/conf/conf/
+#!/bin/sh
+echo '#!/bin/sh' > repo/hooks/pre-revprop-change
+chmod 755 repo/hooks/pre-revprop-change
+svnsync init file:///repo path/ svn://192.168.1.1/repo path/
+svnsync sync file:///repo path
+svnsync --non-interactive sync file:///repo path
