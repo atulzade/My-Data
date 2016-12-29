@@ -1,0 +1,82 @@
+https://www.redhat.com/archives/rhl-list/2005-May/msg04387.html
+
+Re: how to set the idle-timeout in linux SSH
+
+    From: Alexander Apprich <a apprich science-computing de>
+    To: For users of Fedora Core releases <fedora-list redhat com>
+    Subject: Re: how to set the idle-timeout in linux SSH
+    Date: Tue, 31 May 2005 13:39:45 +0200
+
+M E Fieu wrote:
+
+        from "man sshd_config"
+
+
+        ClientAliveInterval
+           Sets a timeout interval in seconds after which
+        if no data has been
+           received from the client, sshd will send a
+        message through the
+           encrypted channel to request a response from the
+        client.  The default
+           is 0, indicating that these messages will not be
+        sent to the
+           client.  This option applies to protocol version
+        2 only.
+        ClientAliveCountMax
+           Sets the number of client alive messages (see
+        above) which may be
+           sent without sshd receiving any messages back
+        from the client.
+           If this threshold is reached while client alive
+        messages are being
+           sent, sshd will disconnect the client,
+        terminating the session.
+           It is important to note that the use of client
+        alive messages is very
+           different from TCPKeepAlive (below).  The client
+        alive mes-
+           sages are sent through the encrypted channel and
+        therefore will not
+           be spoofable.  The TCP keepalive option enabled
+        by TCPKeepAlive
+           is spoofable.  The client alive mechanism is
+        valuable when the client
+           or server depend on knowing when a connection
+        has become
+           inactive.
+
+
+           The default value is 3.  If ClientAliveInterval
+        (above) is set to 15,
+           and ClientAliveCountMax is left at the default,
+        unresponsive
+           ssh clients will be disconnected after
+        approximately 45 seconds.
+
+
+        Set this in your sshd_config and restart opensshd
+
+
+        Hth 
+
+
+
+
+        From the sshd_config that I have, there is no entry 
+
+    like ClientAliveInterval and ClientAliveCountMax in
+    this file.  Should I create the entry in that file?
+    Besides, if there is no such entries in that file,
+    what is the default value then ?
+
+
+
+in /etc/ssh/sshd_config insert
+
+
+ClientAliveInterval 600
+ClientAliveCountMax 3
+
+
+That will give you an timeout of 30 minutes (600 sec x 3)
