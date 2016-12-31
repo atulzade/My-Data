@@ -1,0 +1,20 @@
+http://stackoverflow.com/questions/26734777/yum-error-cannot-retrieve-metalink-for-repository-epel-please-verify-its-path
+
+
+
+use this command:
+
+sudo sed -i "s/mirrorlist=https/mirrorlist=http/" /etc/yum.repos.d/epel.repo
+
+or alternatively use command
+
+vi /etc/yum.repos.d/epel.repo
+
+go to line number 4 and change the url from
+
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+
+to
+
+mirrorlist=http://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+
