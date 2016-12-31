@@ -18,3 +18,15 @@ to
 
 mirrorlist=http://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
 
+------------------------------------------------------------------------------------------------------
+
+RESOLUTION: for CentOS 6.2
+
+Type the following commands
+
+yum -y remove qpid-cpp-client
+yum -y update
+reboot 
+
+--------------------------------------------------------------------------------------------------------
+
