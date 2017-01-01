@@ -1,0 +1,55 @@
+https://access.redhat.com/solutions/10185
+
+
+How do I exclude kernel or other packages from getting updated in Red Hat Enterprise Linux while updating system via yum?
+Solution Verified - Updated October 20 2015 at 2:01 PM - English
+Environment
+
+    Red Hat Enterprise Linux (RHEL) 5
+    Red Hat Enterprise Linux (RHEL) 6
+    Red Hat Enterprise Linux (RHEL) 7
+    Red Hat Satellite
+    Red Hat Network
+
+Issue
+
+    How do I exclude kernel or other packages from getting updated in Red Hat Enterprise Linux while updating system via yum?
+    How do I use the exclude option with yum?
+    How to prevent a package from updating while updating system from Satellite Server ?
+    How to exclude only 32 bit or 64 bit packages ?
+
+Resolution
+
+    The up2date command in Red Hat Enterprise Linux 4 excludes kernel updates by default. The yum in Red Hat Enterprise Linux 5 includes kernel updates by default.
+
+    To skip installing or updating kernel or other packages while using the yum update utility in Red Hat Enterprise Linux 5 and 6, use following options:
+
+    Temporary solution via Command line:
+
+Raw
+
+# yum update --exclude=PACKAGENAME 
+
+For example, to exclude all kernel related packages:
+Raw
+
+# yum update --exclude=kernel*
+
+    To make permanent changes, edit the /etc/yum.conf file and following entries to it:
+
+Raw
+
+[main]
+cachedir=/var/cache/yum/$basearch/$releasever
+keepcache=0
+debuglevel=2
+logfile=/var/log/yum.log
+exclude=kernel* redhat-release*                           <==== 
+
+NOTE: If there are multiple package to be excluded then separate them using a single space or comma. Also, do not add multiple exclude= lines in the configuration file because yum only considers the last exclude entry.
+
+To exclude 32 bit packages edit /etc/yum.conf file.
+Raw
+
+exclude=*.i?86 *.i686
+
