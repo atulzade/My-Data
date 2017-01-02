@@ -1,0 +1,23 @@
+http://blog.zwiegnet.com/linux-server/configure-ntp-client-on-centos-7/
+
+
+Configure NTP Client on CentOS 7
+
+Configure NTP Client on CentOS 7
+
+This is pretty straight forward, basically we are going to setup our CentOS 7 machine to sync with an internal NTP server to get time.
+
+login, and su to root
+
+from here install the ntp package
+
+issue the ntpdate command to sync with an external time source, you may also want to sync it with an internal one to get better results
+
+now edit the ntp.conf so Linux knows what time servers to sync with on startup
+
+edit/cusomize lines 19-23 as follows, and customize as necessary
+
+set the service to run on startup
+
+now start the service
+
