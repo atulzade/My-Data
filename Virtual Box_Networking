@@ -1,0 +1,20 @@
+
+According to VirtualBox manual, these are the network possibilities for your VMs:
+
+    NAT: Internal network between VM and host. Besides you can access to the Internet. Two or more VMs in NAT mode don't have connectivity among them, only with the host and Internet.
+
+    Internal: All VMs with this configuration will have connectivity among them but not with the host nor Internet.
+
+    Host only: A virtual network will be created between the host and all the VMs with this configuration, but you will have no Internet access.
+
+    NAT Network: You can reach all VMs in the same pre-defined NAT network and the host, but you won't be able to connect to Internet.
+
+    Bridged: Your VM will be in the same network that your host as if it were other computer/server in this network, and thus, it will have Internet acces if your host has.
+
+    Generic: Advanced and more specific configuration rarely used.
+
+So, if you want to create an internal network with connectivity to the host choose NAT Network, but notice that you will have no Internet access. NAT is set only when you just want Internet access from your VM and nothing else.
+
+However none of these settings are ok with you if you want to have either connectivity between both VMs and the Internet. As far as I know, your only choice is to configure both VMs in bridged mode, so they will be 'different' computers in you host network and you will be able to ping them all and the Internet from any of them.
+
+On the other hand, it seems that you clonned one VM from the other because both machines have the same MAC address (HWaddr in ifconfig command info), be aware that you should check the checkbox that reads "Reinitialize the MAC address of all network cards" when clonning. Two devices with the same MAC address always creates problems.
