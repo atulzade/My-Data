@@ -102,6 +102,88 @@ specified host using –H option and perform the same actions as locally. For ex
 
 # systemctl -H remote_host start remote_service
 
+** Don’t run this command if you still want to maintain connection **
+# systemctl stop NetworkManager.service
+# systemctl disable NetworkManager.service
+
+-----------------------------------------------------------------------
+
+# nano /etc/sysconfig/network-scripts/ifcfg-eno16777736
+HWADDR=00:0C:29:5B:08:A2
+TYPE=Ethernet
+BOOTPROTO=static
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+USERCTL=no
+NM_CONTROLLED=no
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_FAILURE_FATAL=no
+NAME=eno16777736
+UUID=8c6eefa2-0d7b-4559-9870-2953290dc988
+ONBOOT=yes
+IPADDR=192.168.1.70
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=192.168.1.1
+DNS2=8.8.8.8
+DOMAIN=rheltest.lan
+
+-----------------------------------------------------------------------------------------------------
+
+After finishing editing the file, close it and move to resolv.conf file if you want DNS servers enabled system wide.
+# nano /etc/resolv.conf
+
+Here just add your DNS servers using nameserver statement.
+nameserver 192.168.1.
+nameserver 8.8.8.8
+
+Now Network Interface is configured with a static IP, the only thing remaining is to restart your network or reboot your 
+system and use ifconfig or ip command to view IP address and test configuration using ping command.
+# systemctl restart network
+
+After restart use the newly static IP address configured to perform remote login with SSH.
+# service network status
+# ifconfig
+# ip addr show
+
+Hostname File
+# nano /etc/hostname
+
+Here you can add just the name of the system but it’s a good idea to append the .dot domain to.
+server.rheltest.lan
+
+Hosts File
+# nano /etc/hosts
+
+Here add the same hostname as above on 127.0.0.1 line before localhost.localdomain statements.
+127.0.0.1              server.rheltest.lan  localhost.localdomain …
+
+To test if your hostname is correctly set use hostname command.
+# hostname -s  # For short name
+# hostname -f  # For FQDN mame
+
+NetworkManager Text User Interface (TUI) tool, nmtui, is a RHEL intuitive tool which provides a text interface to configure networking by 
+controlling Network Manager, which helps editing advanced network settings such as assign static IP addresses to Network 
+Interfaces, activate or disable a connection, edit WI-FI connections, set your system hostname or create advanced Network 
+interfaces like InfiniBand, bond, bridge, team or VLAN.
+
+NetworkManager-tui is installed by default in RHEL/CentOS 7.0, but if for some reasons its missing issue the following command 
+to install it.
+# yum install NetworkManager-tui
+
+ To start Network Manager Text User Interface run nmtui command and use TAB or arrow keys to navigate through and press Enter 
+ to select an option. If you want to directly edit or connect a specific interface run the following options.
+ # nmtui edit eno16777736
+# nmtui connect eno16777736
+
+http://www.tecmint.com/configure-network-interface-in-rhel-centos-7-0/
+-----------------------------------------------------------------------------------------------------------------------------
 
 
 
