@@ -80,3 +80,6 @@ ASTERIX (1) # set lease-time
 <integer> 300 ~ 8640000 seconds (5 minutes ~ 100 days)
 0 for unlimited lease time 
 -----------------------------------------------------------------
+
+3) # nmtui ( command to modify network settings )
+
