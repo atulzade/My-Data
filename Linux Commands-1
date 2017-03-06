@@ -90,5 +90,9 @@ command to check what services are running by default on our server.
 # netstat -tulpn
 # lsof -i 
 
+If you want to get a list of all started services run service command and for an exhaustive report use systemctl.
+# service --status-all
+# systemctl list-unit-files
+
 
 
