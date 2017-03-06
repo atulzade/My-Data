@@ -81,5 +81,14 @@ ASTERIX (1) # set lease-time
 0 for unlimited lease time 
 -----------------------------------------------------------------
 
-3) # nmtui ( command to modify network settings )
+3) Network : http://www.tecmint.com/configure-network-interface-in-rhel-centos-7-0/ 
+# nmtui ( command to modify network settings )
+
+After the tools have installed run ifconfig to get your Network Interfaces settings and status, and, then run netstat or lsof 
+command to check what services are running by default on our server.
+# ifconfig
+# netstat -tulpn
+# lsof -i 
+
+
 
