@@ -94,5 +94,14 @@ If you want to get a list of all started services run service command and for an
 # service --status-all
 # systemctl list-unit-files
 
+To manage services run systemctlcommand using the most important switches: start, stop, restart, reload, disable, enable, show, 
+list-dependencies, is-enabled etc. followed by your service name.
+
+Also, another important feature that systemctl command can also run on remote server through SSH service on a
+specified host using –H option and perform the same actions as locally. For example, see the command and screenshot below.
+
+# systemctl -H remote_host start remote_service
+
+
 
 
