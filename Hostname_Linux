@@ -1,0 +1,25 @@
+https://www.digitalocean.com/community/questions/setting-the-fqdn-in-centos-7
+
+
+
+PROCEDURE OF SETTING FQDN ON CENTOS 7 -
+
+Step 1 – Login to your server / VPS as root or as a user with root privilege.
+
+Step 2 – Check current hostname:
+
+1 hostname
+
+Step 3 – You may also want to find out status of your server and its hostname using hostnamectl command:
+
+1 hostnamectl status
+
+Step 4 – Now here’s the magic command to change default CentOS 7 hostname without having to reboot your server:
+
+1 hostnamectl set-hostname fqdn.host.name
+
+Change fqdn.host.name to your own FQDN hostname. Example:
+
+1 hostnamectl set-hostname servedby.servermom.org
+
+So if you issue the hostnamectl status command again, you’ll see it changed. But however you’ll only see it has really changed if you close current session and reopen new SSH session (get out and login back)
