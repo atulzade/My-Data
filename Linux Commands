@@ -76,19 +76,23 @@ phpinfo () ;
 
 13) Command to take backup of mysql Database through command line :-
 
-To start, SSH into the first server (using a tool like PuTTy) as a user with sufficient privileges to work with the server. Execute the following command at the terminal to dump the database to a file:
+To start, SSH into the first server (using a tool like PuTTy) as a user with sufficient privileges to work with the server. 
+Execute the following command at the terminal to dump the database to a file:
 
 mysqldump -u [username] -p [database_name] > [dumpfilename.sql]
 
-You will be prompted for the password and the export will begin. Note that you should replace each variable in brackets with the proper values and do not include the brackets.
+You will be prompted for the password and the export will begin. Note that you should replace each variable in brackets with the
+proper values and do not include the brackets.
 
-When the export is complete, it’s helpful to compress the file to make it transfer to the new server faster. To do so, run the following command:
+When the export is complete, it’s helpful to compress the file to make it transfer to the new server faster. To do so, run the 
+following command:
 
 tar zcf dumpfilename.tar.gz dumpfilename.sql
 
 replacing dumpfilename with your actual file name.
 
-Next, transfer the compressed file to your new server, either by making it available at a web address at the old server and using wget, or by using FTP to download and upload the file.
+Next, transfer the compressed file to your new server, either by making it available at a web address at the old server and 
+using wget, or by using FTP to download and upload the file.
 
 Once the file is on the new server, start be decompressing it using the following command:
 
@@ -101,21 +105,26 @@ The hit list
     Arg! The 9 hardest things programmers have to do
     Superclass: 14 of the world’s best living programmers
 
-You’ll now have your original file dumpfilename.sql that you can import into your database. To begin the import process, use the command:
+You’ll now have your original file dumpfilename.sql that you can import into your database. To begin the import process, use 
+the command:
 
 mysql -u [username] -p [database_name] < [dumpfilename.sql]
 
-You will be prompted for the password and the import will begin. Note that you should replace each variable in brackets with the proper values and do not include the brackets.
+You will be prompted for the password and the import will begin. Note that you should replace each variable in brackets with 
+the proper values and do not include the brackets.
 
 When the terminal returns to the ready cursor, the import is complete.
 
 14) Changing the Time Zone
 
-Amazon Linux instances are set to the UTC (Coordinated Universal Time) time zone by default, but you may wish to change the time on an instance to the local time or to another time zone in your network.
+Amazon Linux instances are set to the UTC (Coordinated Universal Time) time zone by default, but you may wish to change the 
+time
+on an instance to the local time or to another time zone in your network.
 
 To change the time zone on an instance
 
-    Identify the time zone to use on the instance. The /usr/share/zoneinfo directory contains a hierarchy of time zone data files. Browse the directory structure at that location to find a file for your time zone.
+    Identify the time zone to use on the instance. The /usr/share/zoneinfo directory contains a hierarchy of time zone data 
+    files. Browse the directory structure at that location to find a file for your time zone.
 
     [ec2-user ~]$ ls /usr/share/zoneinfo
     Africa      Chile    GB         Indian       Mideast   posixrules  US
@@ -124,19 +133,24 @@ To change the time zone on an instance
     Arctic      EET      GMT0       Israel       Navajo    right       W-SU
     ...
 
-    Some of the entries at this location are directories (such as America), and these directories contain time zone files for specific cities. Find your city (or a city in your time zone) to use for the instance. In this example, you can use the time zone file for Los Angeles, /usr/share/zoneinfo/America/Los_Angeles.
+    Some of the entries at this location are directories (such as America), and these directories contain time zone files for 
+    specific cities. Find your city (or a city in your time zone) to use for the instance. In this example, you can use the 
+    time zone file for Los Angeles, /usr/share/zoneinfo/America/Los_Angeles.
 
     Update the /etc/sysconfig/clock file with the new time zone.
 
-        Open the /etc/sysconfig/clock file with your favorite text editor (such as vim or nano). You need to use sudo with your editor command because /etc/sysconfig/clock is owned by root.
+        Open the /etc/sysconfig/clock file with your favorite text editor (such as vim or nano). You need to use sudo with your 
+        editor command because /etc/sysconfig/clock is owned by root.
 
-        Locate the ZONE entry, and change it to the time zone file (omitting the /usr/share/zoneinfo section of the path). For example, to change to the Los Angeles time zone, change the ZONE entry to the following.
+        Locate the ZONE entry, and change it to the time zone file (omitting the /usr/share/zoneinfo section of the path). For 
+        example, to change to the Los Angeles time zone, change the ZONE entry to the following.
 
         ZONE="America/Los_Angeles"
 
         Save the file and exit the text editor.
 
-    Create a symbolic link between /etc/localtime and your time zone file so that the instance finds the time zone file when it references local time information.
+    Create a symbolic link between /etc/localtime and your time zone file so that the instance finds the time zone file when it 
+    ferences local time information.
 
     [ec2-user ~]$ sudo ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
@@ -160,7 +174,8 @@ sudo yum install phpmyadmin
 
 # sudo yum --enablerepo=epel install phpmyadmin
 
-18)  Create a text file containing the following statement on a single line. Replace the password with the password that you want to use.
+18)  Create a text file containing the following statement on a single line. Replace the password with the password that 
+you want to use.
 
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MyNewPass');
 
@@ -185,7 +200,9 @@ cp -rfp /var/www/html/etc.... /home/ec2-user/
 # mysql -h myinstance.123456789012.us-east-1.rds.amazonaws.com -P 3306 -u mymasteruser -p
 
 26) Process to install database in linux server :
-i) create database using phpmyadmin ( utf8_general_ci ) ii) upload .sql file in server iii) using this command to install database on server 
+i) create database using phpmyadmin ( utf8_general_ci ) ii) upload .sql file in server iii) using this command to install 
+database 
+on server 
 ( mysql -h localhost -u root -p myrakshak_demo < /home/ec2-user/Myrakshak-Backup-24-11-2015.sql )
 
 27) command to configure cronjob : ( Default Path /var/spool/cron )
