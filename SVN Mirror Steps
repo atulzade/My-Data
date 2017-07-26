@@ -9,3 +9,18 @@ chmod 755 repo/hooks/pre-revprop-change
 svnsync init file:///repo path/ svn://192.168.1.1/repo path/
 svnsync sync file:///repo path
 svnsync --non-interactive sync file:///repo path
+
+--------------------
+
+#!/bin/sh
+LOG_FILE=/root/Mirror/Mirror.log
+now=$(date +"%T")
+for var in repos
+do
+echo $var
+svnsync sync file:///var/svn/projects/$var >> ${LOG_FILE}
+done
+
+--------------------
+*/15 * * * * /root/Mirror/mirror.sh
+--------------------
