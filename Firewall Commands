@@ -4,3 +4,5 @@ https://blog.webernetz.net/2015/12/21/cli-commands-for-troubleshooting-fortigate
 Firewall Policy:
 http://cookbook.fortinet.com/creating-security-policies/
 
+#diag sniff packet any "host 8.8.4.4 and icmp" 4 interfaces=[any] #To sniff the host
+
