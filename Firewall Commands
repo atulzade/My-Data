@@ -6,3 +6,5 @@ http://cookbook.fortinet.com/creating-security-policies/
 
 #diag sniff packet any "host 8.8.4.4 and icmp" 4 interfaces=[any] #To sniff the host
 
+#http://ai.net.nz/wiki/index.php?title=FortiGate_60D#
+
