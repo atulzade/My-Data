@@ -229,3 +229,5 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
 34) Now we can allow web server traffic:
 iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+34) yum install --downloadonly --downloaddir /tmp <package name> # command to download package
