@@ -117,6 +117,8 @@ When the terminal returns to the ready cursor, the import is complete.
 
 14) Changing the Time Zone
 
+https://www.cyberciti.biz/faq/centos-linux-6-7-changing-timezone-command-line/
+
 Amazon Linux instances are set to the UTC (Coordinated Universal Time) time zone by default, but you may wish to change the 
 time
 on an instance to the local time or to another time zone in your network.
