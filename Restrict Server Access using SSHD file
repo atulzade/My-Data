@@ -1,0 +1,33 @@
+http://yurisk.info/2011/04/05/two-tips-to-secure-ssh-access-from-specific-ips-to-specific-users-in-checkpoint-or-any-linux/
+
+
+Yuri Slobodyanyuk's blog on IT Security and Networking sharing experience and expertise
+
+Two tips to secure SSH access from specific IPs to specific users in Checkpoint or any Linux
+April 5, 2011 / / 6 Comments	
+
+Today I’ll bring you two tips to secure SSH access to the Checkpoint firewall beyond firewall rules itself. SSH access is the most powerful way to own the firewall so it should be secured to the paranoid level and even then it is never enough.
+Tip 1 Change the listening port.
+You may say obscurity is not security but I will not agree – any measure that makes attacking your system harder without much burden on you is valid. After all there is no such thing total security, only endless arms race. Checkpoint just being a Linux in disguise uses OpenSSH server so changing the port is done via :
+NOTE before changing listening port don’t forget to allow incoming connection on this port in firewall rules.
+/etc/ssh/sshd_config:
+#Port 22
+You change the above line to (if say I want to change port to 5022):
+Port 5022
+Then save , then restart the SSH daemon:
+[Expert@fireball]# service sshd restart
+
+Now you connect to the firewall #ssh -p 5022 user@IP
+Tip 2 Limit SSH access per user and per IP address
+Openssh provides the possibility to restrict access for specific user to specific IP addresses. I will look here at few potential scenarios.
+Case 1 Limit all SSH users to access from specific IP , here from network 99.19.19.0/24:
+At the bottom of the same file /etc/ssh/sshd_config I add:
+AllowUsers *@99.19.19.*
+
+Save the file, restart SSH daemon and this will take effect – only users coming from network 99.19.19.0/24 will be able to login by ssh , any other source IP will always get “Wrong username or password” even when providing the correct ones
+Case 2 Limit some users to access from specific IPs but allow others from Any.
+Checkpoint comes with default user admin that people often do not change, and I concluded over the years that changing people’s bad behavior is much harder than changing firewalls. So I do this to restrict ssh access by ip:
+When both me and client are managing the firewall, I create the username for me , here yurisk and restrict the username admin to internal nets (for emergency cases) and his specific IP. Here my user is yurisk, client’s user is admin and LAN is 10.88.88.0/24 and client’s WAN IP is 123.123.123.10
+/etc/ssh/sshd_config
+AllowUsers admin@123.123.123.10 admin@10.88.88.* yurisk
+This way the user admin can only connect from either 123.123.123.123 or 10.88.88.0/24 and yurisk can connect from anywhere. 
