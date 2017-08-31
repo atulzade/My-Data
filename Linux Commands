@@ -20,7 +20,10 @@ quit
 mysql> UPDATE mysql.user SET Password = PASSWORD('new_password')
     ->     WHERE User = 'root';
 mysql> FLUSH PRIVILEGES;
- 
+
+for ex.
+UPDATE mysql.user SET Password = PASSWORD('123')
+    ->     WHERE User = 'root';
 
 5)To Create user in Mysql :-
 
