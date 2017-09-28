@@ -5,3 +5,5 @@ rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 https://www.tecmint.com/install-mariadb-in-centos-7/
 
 https://www.server-world.info/en/note?os=CentOS_7&p=openldap&f=2
+
+http://devdocs.magento.com/guides/v2.0/install-gde/prereq/php-centos.html ( php 56 installatio )
